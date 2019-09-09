@@ -111,3 +111,205 @@ password: raspberry
            ```
            
 - Instead of Advanced IP Scanner , we can just use ``` ping raspberrypi.local ``` to find out the IP address of the raspi
+
+## Installing Docker
+- open the terminal and  switch from pi to root user
+```
+sudo su
+```
+- Enter this command to install docker.  
+```
+curl -sSL https://get.docker.com/ | sh
+```
+Here -L means location, -s means silent and -S means show error.
+
+- Else we can  add “pi” user to “docker” group using the following command –
+```
+sudo usermod -aG docker pi
+```
+
+- docker info
+```
+
+root@raspberrypi:/home/pi# docker info
+Client:
+ Debug Mode: false
+
+Server:
+ Containers: 1
+  Running: 0
+  Paused: 0
+  Stopped: 1
+ Images: 1
+ Server Version: 19.03.1
+ Storage Driver: overlay2
+  Backing Filesystem: extfs
+  Supports d_type: true
+  Native Overlay Diff: true
+ Logging Driver: json-file
+ Cgroup Driver: cgroupfs
+ Plugins:
+  Volume: local
+  Network: bridge host ipvlan macvlan null overlay
+  Log: awslogs fluentd gcplogs gelf journald json-file local logentries splunk syslog
+ Swarm: inactive
+ Runtimes: runc
+ Default Runtime: runc
+ Init Binary: docker-init
+ containerd version: 894b81a4b802e4eb2a91d1ce216b8817763c29fb
+ runc version: 425e105d5a03fabd737a126ad93d62a9eeede87f
+ init version: fec3683
+ Security Options:
+  seccomp
+   Profile: default
+ Kernel Version: 4.19.66-v7+
+ Operating System: Raspbian GNU/Linux 10 (buster)
+ OSType: linux
+ Architecture: armv7l
+ CPUs: 4
+ Total Memory: 926.1MiB
+ Name: raspberrypi
+ ID: NSJC:PO6K:TXUT:N5N2:SZQU:2VCX:2PIL:HU3J:3KPD:JUKA:HLJV:JZKD
+ Docker Root Dir: /var/lib/docker
+ Debug Mode: false
+ Registry: https://index.docker.io/v1/
+ Labels:
+ Experimental: false
+ Insecure Registries:
+  127.0.0.0/8
+ Live Restore Enabled: false
+
+WARNING: No swap limit support
+WARNING: No cpu cfs quota support
+WARNING: No cpu cfs period support
+
+```
+## Deploying Nginx App
+
+```
+root@raspberrypi:/home/pi# docker run -d -p 80:80 nginx
+8b52c1192b38d127cf8793c83d17b0c2f22f5dc42e7302dd2ffaba74d814c1be 
+
+
+root@raspberrypi:/home/pi# curl localhost:80
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+
+```
+## Checking docker status 
+
+```
+root@raspberrypi:/home/pi# systemctl status docker
+● docker.service - Docker Application Container Engine
+   Loaded: loaded (/lib/systemd/system/docker.service; enabled; vendor preset: enabled)
+   Active: active (running) since Mon 2019-09-09 22:38:12 IST; 1h 58min ago
+     Docs: https://docs.docker.com
+ Main PID: 438 (dockerd)
+    Tasks: 22
+   Memory: 94.0M
+   CGroup: /system.slice/docker.service
+           ├─ 438 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+           └─1863 /usr/bin/docker-proxy -proto tcp -host-ip 0.0.0.0 -host-port 80 -container-ip 172.17.0.2 -container
+
+Sep 09 22:37:56 raspberrypi dockerd[438]: time="2019-09-09T22:37:56.709551954+05:30" level=warning msg="Your kernel d
+Sep 09 22:37:56 raspberrypi dockerd[438]: time="2019-09-09T22:37:56.709643776+05:30" level=warning msg="Your kernel d
+Sep 09 22:37:56 raspberrypi dockerd[438]: time="2019-09-09T22:37:56.709734662+05:30" level=warning msg="Your kernel d
+Sep 09 22:37:56 raspberrypi dockerd[438]: time="2019-09-09T22:37:56.713169089+05:30" level=info msg="Loading containe
+Sep 09 22:38:07 raspberrypi dockerd[438]: time="2019-09-09T22:38:07.020645127+05:30" level=info msg="Default bridge (
+Sep 09 22:38:09 raspberrypi dockerd[438]: time="2019-09-09T22:38:09.057648876+05:30" level=info msg="Loading containe
+Sep 09 22:38:11 raspberrypi dockerd[438]: time="2019-09-09T22:38:11.851176219+05:30" level=info msg="Docker daemon" c
+Sep 09 22:38:11 raspberrypi dockerd[438]: time="2019-09-09T22:38:11.868887156+05:30" level=info msg="Daemon has compl
+Sep 09 22:38:12 raspberrypi systemd[1]: Started Docker Application Container Engine.
+Sep 09 22:38:12 raspberrypi dockerd[438]: time="2019-09-09T22:38:12.958539447+05:30" level=info msg="API listen on /v
+root@raspberrypi:/home/pi#
+
+```
+## Checking Processer info of raspi
+
+```
+root@raspberrypi:/home/pi# cat /proc/cpuinfo | grep model
+model name      : ARMv7 Processor rev 4 (v7l)
+model name      : ARMv7 Processor rev 4 (v7l)
+model name      : ARMv7 Processor rev 4 (v7l)
+model name      : ARMv7 Processor rev 4 (v7l)
+
+```
+
+or 
+
+```
+root@raspberrypi:/home/pi# cat /etc/os-release
+PRETTY_NAME="Raspbian GNU/Linux 10 (buster)"
+NAME="Raspbian GNU/Linux"
+VERSION_ID="10"
+VERSION="10 (buster)"
+VERSION_CODENAME=buster
+ID=raspbian
+ID_LIKE=debian
+HOME_URL="http://www.raspbian.org/"
+SUPPORT_URL="http://www.raspbian.org/RaspbianForums"
+BUG_REPORT_URL="http://www.raspbian.org/RaspbianBugs"
+root@raspberrypi:/home/pi#
+
+```
+## Create a Docker Container for Raspberry Pi to Blink an LED
+
+Lets create a folder **Docker_test** and write the python script to blink the led on pin 8.
+```
+root@raspberrypi:/home/pi# mkdir docker_test
+root@raspberrypi:/home/pi# cd docker_test/
+root@raspberrypi:/home/pi/docker_test# vi led_blink.py
+```
+**led_blink.py**
+```
+import RPi.GPIO
+import time
+# configure th pin 8
+GPIO.setmode(GPIO.BOARD)
+GPIO.setmode(8,GPIO.OUT)
+GPIO.setwarnings(False)
+
+# Blink interval
+blink_interval = .5 # time in seconds
+
+# blink loop
+
+while True:
+    GPIO.output(8,True)
+    time.sleep(blink_interval)
+
+    GPIO.output(8,False)
+    time.sleep(blink_interval)
+
+    # release
+GPIO.cleanup()
+```
+**Create a dockerfile**
+
+
+
+
+
