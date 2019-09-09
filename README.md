@@ -95,4 +95,6 @@ password: raspberry
  
  ![vnc](https://cdn.staticaly.com/gh/bcurran3/ChocolateyPackages/master/vnc-viewer/vnc-viewer_screenshot.png)
  
- 
+ ### Note: 
+>  - we can connect to raspi even without ethernet cable if the wifi option is enabled and configured to the hotspot
+>  - Instead of Advanced IP Scanner , we can just use ``` ping raspberrypi.local ``` to find out the IP address of the raspi
