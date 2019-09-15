@@ -1,5 +1,5 @@
 # Python Base Image from https://hub.docker.com/r/arm32v7/python/
-FROM arm32v7/python:3.7-slim-buster
+FROM arm32v7/python:3.8.0b4-buster
 
 # Copy the Python Script to blink LED
 COPY led_blink.py ./
