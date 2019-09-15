@@ -5,7 +5,7 @@ FROM arm32v7/python:3.7-slim-buster
 COPY led_blink.py ./
 
 # Intall the rpi.gpio python module
-RUN pip install --no-cache-dir gcc  rpi.gpio
+RUN pip install --no-cache-dir  rpi.gpio
 
 # Trigger Python script
 CMD ["python3", "./led_blink.py"]
