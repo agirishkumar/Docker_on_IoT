@@ -334,6 +334,47 @@ Create Docker Image with the image name as **“docker_blinker”** and tag as *
 ```
 docker build -t "docker_blinker:v1" .
 ```
+result:
+```
+root@raspberrypi:/home/pi/docker_test# docker build -t "docker_blinker:v1" .
+Sending build context to Docker daemon  3.072kB
+Step 1/5 : FROM arm32v7/python:3.8.0b4-buster
+ ---> d99c39ea3ed1
+Step 2/5 : COPY led_blink.py ./
+ ---> Using cache
+ ---> 53c43529c8a2
+Step 3/5 : RUN apt-get install gcc
+ ---> Running in 677b2bf89913
+Reading package lists...
+Building dependency tree...
+Reading state information...
+gcc is already the newest version (4:8.3.0-1).
+0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+Removing intermediate container 677b2bf89913
+ ---> 3c85d4cc66c2
+Step 4/5 : RUN pip install --no-cache-dir rpi.gpio
+ ---> Running in 45ba7047ad3b
+Collecting rpi.gpio
+  Downloading https://files.pythonhosted.org/packages/cb/88/d3817eb11fc77a8d9a63abeab8fe303266b1e3b85e2952238f0da43fed4e/RPi.GPIO-0.7.0.tar.gz
+Building wheels for collected packages: rpi.gpio
+  Building wheel for rpi.gpio (setup.py): started
+  Building wheel for rpi.gpio (setup.py): finished with status 'done'
+  Created wheel for rpi.gpio: filename=RPi.GPIO-0.7.0-cp38-cp38-linux_armv7l.whl size=67631 sha256=6be9ab49f2bca3d5686cb3c1a241e50032939c25aaf42d55fb9afc8e862c97eb
+  Stored in directory: /tmp/pip-ephem-wheel-cache-dv2qht_x/wheels/ec/11/7f/aa6fe56010104b49197ebbd697418affe12e05d42213f3e0ca
+Successfully built rpi.gpio
+Installing collected packages: rpi.gpio
+Successfully installed rpi.gpio-0.7.0
+Removing intermediate container 45ba7047ad3b
+ ---> 956b947edf6c
+Step 5/5 : CMD ["python3", "./led_blink.py"]
+ ---> Running in e466aa3b3c9f
+Removing intermediate container e466aa3b3c9f
+ ---> 44420644edfe
+Successfully built 44420644edfe
+Successfully tagged docker_blinker:v1
+
+
+```
 Once the command execution gets completed you should be able to list the image on your Raspberry Pi using the following command –
 ```
 docker image ls
