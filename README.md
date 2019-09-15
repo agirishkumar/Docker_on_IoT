@@ -309,7 +309,34 @@ GPIO.cleanup()
 ```
 **Create a dockerfile**
 
+create a **'Dockerfile'** in docker_test folder
+```
+vi Dockerfile
+```
+Enter the follwing in the dockerfile
+```
+# Python Base Image from https://hub.docker.com/r/arm32v7/python/
+FROM arm32v7/python:3.7-slim-buster
 
+# Copy the Python Script to blink LED
+COPY led_blink.py ./
 
+# Intall the rpi.gpio python module
+RUN pip install --no-cache-dir rpi.gpio
+
+# Trigger Python script
+CMD ["python3", "./led_blink.py"]
+```
+
+**Create Docker Image from Dockerfile**
+
+Create Docker Image with the image name as **“docker_blinker”** and tag as **“v1”** using the following command –
+```
+docker build -t "docker_blinker:v1" .
+```
+Once the command execution gets completed you should be able to list the image on your Raspberry Pi using the following command –
+```
+docker image ls
+```
 
 
