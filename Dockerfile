@@ -3,7 +3,7 @@ FROM arm32v7/python:3.8.0b4-buster
 
 # Copy the Python Script to blink LED
 COPY led_blink.py ./
-
+RUN apt-get install gcc
 # Intall the rpi.gpio python module
 RUN pip install --no-cache-dir  rpi.gpio
 
