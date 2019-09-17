@@ -380,4 +380,17 @@ Once the command execution gets completed you should be able to list the image o
 docker image ls
 ```
 
+## Start the container to blink led
+![raspi](https://i1.wp.com/iotbyhvm.ooo/wp-content/uploads/2019/03/RPI-Pinout.jpg?w=635&ssl=1)
+
+We have to use *“docker container run”* command with either the *“--privileged”* option or by specifying the Linux GPIO Device (“/dev/gpiomem“) using the *“–device”* option.
+
+You can use one of the following commands to run the Docker Container
+```
+docker container run --device /dev/gpiomem -d docker_blinker:v1
+```
+or 
+```
+docker container run --privileged -d docker_blinker:v1
+```
 
